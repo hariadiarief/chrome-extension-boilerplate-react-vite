@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "@pages/popup/index.css";
 import Popup from "@pages/popup/Popup";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
+import 'antd/dist/antd.css'
 
 refreshOnUpdate("pages/popup");
 
