@@ -9,6 +9,61 @@ const Popup = () => {
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [temp, setTemp] = useState<any>();
+
+
+  // useEffect(() => {
+  //   // Once the DOM is ready... 
+  //   window.addEventListener('DOMContentLoaded', sendData);
+  //   return () => {
+  //     window.removeEventListener('DOMContentLoaded', sendData);
+  //   };
+  // }, [])
+
+  // const sendData = () => {
+  //   chrome.tabs.query({
+  //     active: true,
+  //     currentWindow: true
+  //   }, tabs => {
+  //     // ...and send a request for the DOM info...
+  //     chrome.tabs.sendMessage(
+  //       tabs[0].id,
+  //       { from: 'popup', subject: 'DOMInfo' },
+  //       // ...also specifying a callback to be called 
+  //       //    from the receiving end (content script).
+  //       (e) => {
+  //         console.log({ e });
+  //         setTemp(e)
+  //       });
+  //   });
+  // }
+
+  useEffect(() => {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, tabs => {
+      // ...and send a request for the DOM info...
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { from: 'popup', subject: 'DOMInfo' },
+        // ...also specifying a callback to be called 
+        //    from the receiving end (content script).
+        (e) => {
+          console.log({ e });
+          setTemp(e)
+        });
+    });
+  }, [chrome.tabs])
+
+  // useEffect(() => {
+  //   chrome.storage.sync.get(['title'], (obj) => {
+  //     setTemp(obj.title)
+  //     console.log({ v: obj.title })
+  //   });
+
+  // }, [])
+
 
   useEffect(() => {
     setWebStorate()
@@ -20,9 +75,8 @@ const Popup = () => {
         }
       })
       .finally(() => setIsLoading(false))
-
-
   }, [])
+
   const setWebStorate = () => {
     localStorage.setItem("testLocalStorage", "true")
     sessionStorage.setItem("testSessionStorage", "true");
@@ -46,35 +100,26 @@ const Popup = () => {
     },
   ];
 
-  const getDocument = () => {
-    const documentGet = document.getElementsByName("user_code")
-
-    console.log({ documentGet });
-
-  }
-
   return (
     <div>
 
-      <input type="text" name="user_code" value={123123} />
+      <h1>Get Element</h1>
+      <hr />
+      <div>{temp}</div>
+
       <h1>Table</h1>
       <hr />
       <Table loading={isLoading} dataSource={data} columns={columns} />
 
-      <h1>Option</h1>
-      <hr />
-      <Button type="primary" onClick={() => getDocument()}>Get Document</Button> <br />
 
       <h1>Option</h1>
       <hr />
       <Button type="primary" onClick={() => chrome.runtime.openOptionsPage()}>Show Option</Button> <br />
 
-
       <h1>Web Storage</h1>
       <hr />
       <Button type="primary" onClick={() => localStorage.removeItem("testLocalStorage")}>Remove Local Storage</Button> <br />
       <Button type="primary" onClick={() => sessionStorage.removeItem("testSessionStorage")}>Remove Session Storage</Button>
-
 
       <h2>Modal</h2>
       <hr />

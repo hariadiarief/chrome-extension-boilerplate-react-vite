@@ -37,6 +37,7 @@ const manifest: ManifestType = {
       matches: ["*://*/*"],
     },
   ],
+  "permissions": ["storage", "tabs", "scripting", "activeTab"],
 };
 
 export default manifest;
