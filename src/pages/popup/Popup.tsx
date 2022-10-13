@@ -9,7 +9,7 @@ const Popup = () => {
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [temp, setTemp] = useState<any>();
+  const [temp, setTemp] = useState<any>([]);
 
 
   // useEffect(() => {
@@ -57,10 +57,10 @@ const Popup = () => {
   }, [chrome.tabs])
 
   // useEffect(() => {
-  //   chrome.storage.sync.get(['title'], (obj) => {
-  //     setTemp(obj.title)
-  //     console.log({ v: obj.title })
-  //   });
+  // chrome.storage.sync.get(['title'], (obj) => {
+  //   setTemp(obj.title)
+  //   console.log({ v: obj.title })
+  // });
 
   // }, [])
 
@@ -100,12 +100,29 @@ const Popup = () => {
     },
   ];
 
+  const columnsElemnt = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'User Code',
+      dataIndex: 'value',
+      key: 'value',
+    },
+  ];
+
   return (
     <div>
 
       <h1>Get Element</h1>
       <hr />
-      <div>{temp}</div>
+
+      {
+        temp.length === 0 ? null : <Table dataSource={temp} columns={columnsElemnt} />
+      }
+
 
       <h1>Table</h1>
       <hr />

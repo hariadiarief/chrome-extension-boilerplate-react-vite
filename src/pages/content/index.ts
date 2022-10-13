@@ -17,7 +17,17 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
         // through the specified callback.
 
         // response(domInfo);
-        response(document.getElementsByTagName("h1")[0].textContent);
+        // response(document.getElementsByTagName("h1")[0].textContent);
+        // console.log('table', document.getElementsByTagName("table"));
+
+
+        let getUserCode = []
+
+        for (let index = 2; index <= 11; index++) {
+            getUserCode.push({ id: index, value: document.getElementsByTagName("table")[0].rows[index].cells[0].textContent })
+        }
+
+        response(getUserCode);
     }
 });
 
